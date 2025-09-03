@@ -1,23 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using WebApplication1;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<SportsDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<SportsDbContext>();
+    try
+    {
+        if (context.Database.CanConnect())
+            Console.WriteLine("Successfully connected to PostgreSQL!");
+        else
+            Console.WriteLine("Failed to connect to PostgreSQL.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Connection test failed: {ex.Message}");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -2,7 +2,7 @@ namespace WebApplication1;
 
 public class Season
 {
-    public int SeasonId { get; set; }
+    public int Id { get; set; }
     public int LeagueId { get; set; }
     public League League { get; set; }
 
