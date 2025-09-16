@@ -17,10 +17,10 @@ public class GameController : ControllerBase
     public IActionResult GetAll() => Ok(_context.Games.ToList());
 
     [HttpPost]
-    public IActionResult Add([FromBody] Game game)
+    public IActionResult Add([FromBody] TeamBoxScore teamBoxScore)
     {
-        _context.Games.Add(game);
+        _context.Games.Add(teamBoxScore);
         _context.SaveChanges();
-        return Ok(game);
+        return Ok(teamBoxScore);
     }
 }

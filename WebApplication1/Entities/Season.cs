@@ -9,5 +9,5 @@ public class Season
     public int Year { get; set; }
     public string Name { get; set; }  // "2024-25 Season"
 
-    public ICollection<Game> Games { get; set; }
+    public ICollection<TeamBoxScore> Games { get; set; }
 }

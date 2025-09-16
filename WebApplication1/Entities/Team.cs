@@ -11,7 +11,7 @@ public class Team
     // public League League { get; set; }
 
     public ICollection<Player> Players { get; set; } = new List<Player>();
-    public ICollection<Game> HomeGames { get; set; } = new List<Game>();
-    public ICollection<Game> AwayGames { get; set; } = new List<Game>();
+    public ICollection<TeamBoxScore> HomeGames { get; set; } = new List<TeamBoxScore>();
+    public ICollection<TeamBoxScore> AwayGames { get; set; } = new List<TeamBoxScore>();
     public ICollection<Stat> TeamStats { get; set; } =  new List<Stat>();
 }

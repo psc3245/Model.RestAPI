@@ -13,7 +13,7 @@ public class SportsDbContext : DbContext
     public DbSet<Season> Seasons { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<Player> Players { get; set; }
-    public DbSet<Game> Games { get; set; }
+    public DbSet<TeamBoxScore> Games { get; set; }
     public DbSet<Stat> Stats { get; set; }
 
 
@@ -21,13 +21,13 @@ public class SportsDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Game>()
+        modelBuilder.Entity<TeamBoxScore>()
             .HasOne(g => g.HomeTeam)
             .WithMany(t => t.HomeGames)
             .HasForeignKey(g => g.HomeTeamId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Game>()
+        modelBuilder.Entity<TeamBoxScore>()
             .HasOne(g => g.AwayTeam)
             .WithMany(t => t.AwayGames)
             .HasForeignKey(g => g.AwayTeamId)
@@ -47,8 +47,8 @@ public class SportsDbContext : DbContext
             new Player { Id = 2, Name = "Tua Tagovailoa", Position = "QB", Number = 1, TeamId = 2 }
         );
 
-        modelBuilder.Entity<Game>().HasData(
-            new Game { Id = 1, HomeTeamId = 1, AwayTeamId = 2, Date = new DateTime(2025, 9, 7, 13, 0, 0) }
+        modelBuilder.Entity<TeamBoxScore>().HasData(
+            new TeamBoxScore { Id = 1, HomeTeamId = 1, AwayTeamId = 2, Date = new DateTime(2025, 9, 7, 13, 0, 0) }
         );
     }
 
