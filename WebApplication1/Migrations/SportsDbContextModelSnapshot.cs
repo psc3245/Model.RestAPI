@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using WebApplication1;
 
 #nullable disable
 
@@ -22,321 +21,636 @@ namespace WebApplication1.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApplication1.Game", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("GameId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("Attendance")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AwayTeamId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("HomeTeamId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("GameDateTime")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Metadata")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SeasonId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("TeamId1")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("AwayTeamId");
+                    b.Property<Guid?>("VenueId")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("HomeTeamId");
+                    b.HasKey("GameId");
 
                     b.HasIndex("SeasonId");
 
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("TeamId1");
+                    b.HasIndex("VenueId");
 
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("WebApplication1.League", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.GameParticipant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("GameParticipantId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sport")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Leagues");
-                });
-
-            modelBuilder.Entity("WebApplication1.Player", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("WebApplication1.PlayerGameStat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MinutesPlayed")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("StatCategory")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("StatValue")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("PlayerStats");
-                });
-
-            modelBuilder.Entity("WebApplication1.Season", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LeagueId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeagueId");
-
-                    b.ToTable("Seasons");
-                });
-
-            modelBuilder.Entity("WebApplication1.Stat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Stats");
-                });
-
-            modelBuilder.Entity("WebApplication1.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Abbreviation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("LeagueId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TeamSeasonDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamSeasonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("GameParticipantId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("TeamSeasonDetailId");
+
+                    b.ToTable("GameParticipants");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.PlayerGameStat", b =>
+                {
+                    b.Property<Guid>("PlayerGameStatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Stats")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("TeamSeasonDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamSeasonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("PlayerGameStatId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("TeamSeasonDetailId");
+
+                    b.ToTable("PlayerGameStats");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.Roster", b =>
+                {
+                    b.Property<Guid>("RosterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("JerseyNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TeamSeasonDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamSeasonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("RosterId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("TeamSeasonDetailId");
+
+                    b.ToTable("Rosters");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.TeamGameStat", b =>
+                {
+                    b.Property<Guid>("TeamGameStatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Stats")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("TeamSeasonDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamSeasonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("TeamGameStatId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("TeamSeasonDetailId");
+
+                    b.ToTable("TeamGameStats");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.TeamSeasonDetail", b =>
+                {
+                    b.Property<Guid>("TeamSeasonDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("HierarchyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LeagueHierarchyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LogoUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NameAtTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SeasonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("TeamSeasonDetailId");
+
+                    b.HasIndex("LeagueHierarchyId");
+
+                    b.HasIndex("SeasonId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamSeasonDetails");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.League", b =>
+                {
+                    b.Property<Guid>("LeagueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Metadata")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("SportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("LeagueId");
+
+                    b.HasIndex("SportId");
+
+                    b.ToTable("Leagues");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.LeagueHierarchy", b =>
+                {
+                    b.Property<Guid>("LeagueHierarchyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LeagueId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("LeagueHierarchyId");
+
+                    b.HasIndex("LeagueId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("LeagueHierarchies");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Person", b =>
+                {
+                    b.Property<Guid>("PersonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nationality")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhysicalAttributes")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("PersonId");
+
+                    b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Season", b =>
+                {
+                    b.Property<Guid>("SeasonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LeagueId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("SeasonId");
+
+                    b.HasIndex("LeagueId", "Year", "Type")
+                        .IsUnique();
+
+                    b.ToTable("Seasons");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Sport", b =>
+                {
+                    b.Property<Guid>("SportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("SportId");
+
+                    b.ToTable("Sports");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Team", b =>
+                {
+                    b.Property<Guid>("TeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LeagueId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("OfficialName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("TeamId");
 
                     b.HasIndex("LeagueId");
 
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("WebApplication1.TeamGameStat", b =>
+            modelBuilder.Entity("WebApplication1.Entities.Venue", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("VenueId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("Capacity")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("GameId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("Points")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
 
-                    b.Property<int>("Yards")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasIndex("GameId");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("TeamId");
+                    b.HasKey("VenueId");
 
-                    b.ToTable("TeamStats");
+                    b.ToTable("Venues");
                 });
 
-            modelBuilder.Entity("WebApplication1.Game", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.Game", b =>
                 {
-                    b.HasOne("WebApplication1.Team", "AwayTeam")
-                        .WithMany()
-                        .HasForeignKey("AwayTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Team", "HomeTeam")
-                        .WithMany()
-                        .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Season", "Season")
+                    b.HasOne("WebApplication1.Entities.Season", "Season")
                         .WithMany("Games")
                         .HasForeignKey("SeasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApplication1.Team", null)
-                        .WithMany("AwayGames")
-                        .HasForeignKey("TeamId");
-
-                    b.HasOne("WebApplication1.Team", null)
-                        .WithMany("HomeGames")
-                        .HasForeignKey("TeamId1");
-
-                    b.Navigation("AwayTeam");
-
-                    b.Navigation("HomeTeam");
+                    b.HasOne("WebApplication1.Entities.Venue", "Venue")
+                        .WithMany("Games")
+                        .HasForeignKey("VenueId");
 
                     b.Navigation("Season");
+
+                    b.Navigation("Venue");
                 });
 
-            modelBuilder.Entity("WebApplication1.Player", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.GameParticipant", b =>
                 {
-                    b.HasOne("WebApplication1.Team", "Team")
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("WebApplication1.PlayerGameStat", b =>
-                {
-                    b.HasOne("WebApplication1.Game", "Game")
-                        .WithMany()
+                    b.HasOne("WebApplication1.Complex_Entities.Game", "Game")
+                        .WithMany("GameParticipants")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApplication1.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
+                    b.HasOne("WebApplication1.Complex_Entities.TeamSeasonDetail", "TeamSeasonDetail")
+                        .WithMany("GameParticipants")
+                        .HasForeignKey("TeamSeasonDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Game");
 
-                    b.Navigation("Player");
+                    b.Navigation("TeamSeasonDetail");
                 });
 
-            modelBuilder.Entity("WebApplication1.Season", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.PlayerGameStat", b =>
                 {
-                    b.HasOne("WebApplication1.League", "League")
+                    b.HasOne("WebApplication1.Complex_Entities.Game", "Game")
+                        .WithMany("PlayerGameStats")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Entities.Person", "Person")
+                        .WithMany("PlayerGameStats")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Complex_Entities.TeamSeasonDetail", "TeamSeasonDetail")
+                        .WithMany("PlayerGameStats")
+                        .HasForeignKey("TeamSeasonDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Person");
+
+                    b.Navigation("TeamSeasonDetail");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.Roster", b =>
+                {
+                    b.HasOne("WebApplication1.Entities.Person", "Person")
+                        .WithMany("Rosters")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Complex_Entities.TeamSeasonDetail", "TeamSeasonDetail")
+                        .WithMany("Rosters")
+                        .HasForeignKey("TeamSeasonDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+
+                    b.Navigation("TeamSeasonDetail");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.TeamGameStat", b =>
+                {
+                    b.HasOne("WebApplication1.Complex_Entities.Game", "Game")
+                        .WithMany("TeamGameStats")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Complex_Entities.TeamSeasonDetail", "TeamSeasonDetail")
+                        .WithMany("TeamGameStats")
+                        .HasForeignKey("TeamSeasonDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("TeamSeasonDetail");
+                });
+
+            modelBuilder.Entity("WebApplication1.Complex_Entities.TeamSeasonDetail", b =>
+                {
+                    b.HasOne("WebApplication1.Entities.LeagueHierarchy", "LeagueHierarchy")
+                        .WithMany("TeamSeasonDetails")
+                        .HasForeignKey("LeagueHierarchyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Entities.Season", "Season")
+                        .WithMany("TeamSeasonDetails")
+                        .HasForeignKey("SeasonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Entities.Team", "Team")
+                        .WithMany("TeamSeasonDetails")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeagueHierarchy");
+
+                    b.Navigation("Season");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.League", b =>
+                {
+                    b.HasOne("WebApplication1.Entities.Sport", "Sport")
+                        .WithMany("Leagues")
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.LeagueHierarchy", b =>
+                {
+                    b.HasOne("WebApplication1.Entities.League", "League")
+                        .WithMany("LeagueHierarchies")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Entities.LeagueHierarchy", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("League");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Season", b =>
+                {
+                    b.HasOne("WebApplication1.Entities.League", "League")
                         .WithMany("Seasons")
                         .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -345,32 +659,9 @@ namespace WebApplication1.Migrations
                     b.Navigation("League");
                 });
 
-            modelBuilder.Entity("WebApplication1.Stat", b =>
+            modelBuilder.Entity("WebApplication1.Entities.Team", b =>
                 {
-                    b.HasOne("WebApplication1.Game", "Game")
-                        .WithMany("Stats")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Player", "Player")
-                        .WithMany("PlayerStats")
-                        .HasForeignKey("PlayerId");
-
-                    b.HasOne("WebApplication1.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId");
-
-                    b.Navigation("Game");
-
-                    b.Navigation("Player");
-
-                    b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("WebApplication1.Team", b =>
-                {
-                    b.HasOne("WebApplication1.League", "League")
+                    b.HasOne("WebApplication1.Entities.League", "League")
                         .WithMany("Teams")
                         .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -379,56 +670,69 @@ namespace WebApplication1.Migrations
                     b.Navigation("League");
                 });
 
-            modelBuilder.Entity("WebApplication1.TeamGameStat", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.Game", b =>
                 {
-                    b.HasOne("WebApplication1.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("GameParticipants");
 
-                    b.HasOne("WebApplication1.Team", "Team")
-                        .WithMany("TeamStats")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("PlayerGameStats");
 
-                    b.Navigation("Game");
-
-                    b.Navigation("Team");
+                    b.Navigation("TeamGameStats");
                 });
 
-            modelBuilder.Entity("WebApplication1.Game", b =>
+            modelBuilder.Entity("WebApplication1.Complex_Entities.TeamSeasonDetail", b =>
                 {
-                    b.Navigation("Stats");
+                    b.Navigation("GameParticipants");
+
+                    b.Navigation("PlayerGameStats");
+
+                    b.Navigation("Rosters");
+
+                    b.Navigation("TeamGameStats");
                 });
 
-            modelBuilder.Entity("WebApplication1.League", b =>
+            modelBuilder.Entity("WebApplication1.Entities.League", b =>
                 {
+                    b.Navigation("LeagueHierarchies");
+
                     b.Navigation("Seasons");
 
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("WebApplication1.Player", b =>
+            modelBuilder.Entity("WebApplication1.Entities.LeagueHierarchy", b =>
                 {
-                    b.Navigation("PlayerStats");
+                    b.Navigation("Children");
+
+                    b.Navigation("TeamSeasonDetails");
                 });
 
-            modelBuilder.Entity("WebApplication1.Season", b =>
+            modelBuilder.Entity("WebApplication1.Entities.Person", b =>
+                {
+                    b.Navigation("PlayerGameStats");
+
+                    b.Navigation("Rosters");
+                });
+
+            modelBuilder.Entity("WebApplication1.Entities.Season", b =>
                 {
                     b.Navigation("Games");
+
+                    b.Navigation("TeamSeasonDetails");
                 });
 
-            modelBuilder.Entity("WebApplication1.Team", b =>
+            modelBuilder.Entity("WebApplication1.Entities.Sport", b =>
                 {
-                    b.Navigation("AwayGames");
+                    b.Navigation("Leagues");
+                });
 
-                    b.Navigation("HomeGames");
+            modelBuilder.Entity("WebApplication1.Entities.Team", b =>
+                {
+                    b.Navigation("TeamSeasonDetails");
+                });
 
-                    b.Navigation("Players");
-
-                    b.Navigation("TeamStats");
+            modelBuilder.Entity("WebApplication1.Entities.Venue", b =>
+                {
+                    b.Navigation("Games");
                 });
 #pragma warning restore 612, 618
         }
