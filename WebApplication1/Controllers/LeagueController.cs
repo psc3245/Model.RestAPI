@@ -17,13 +17,13 @@ public class LeaguesController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all leagues.
+    ///     Gets a list of all leagues.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<LeagueDto>>> GetLeagues()
     {
         var leagues = await _context.Leagues
-           .Select(l => new LeagueDto
+            .Select(l => new LeagueDto
             {
                 LeagueId = l.LeagueId,
                 SportId = l.SportId,
@@ -32,13 +32,13 @@ public class LeaguesController : ControllerBase
                 Level = l.Level,
                 Metadata = l.Metadata
             })
-           .ToListAsync();
+            .ToListAsync();
 
         return Ok(leagues);
     }
 
     /// <summary>
-    /// Gets a specific league by its unique ID.
+    ///     Gets a specific league by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the league.</param>
     [HttpGet("{id}")]
@@ -46,10 +46,7 @@ public class LeaguesController : ControllerBase
     {
         var league = await _context.Leagues.FindAsync(id);
 
-        if (league == null)
-        {
-            return NotFound(); // Returns a 404 Not Found if the league doesn't exist
-        }
+        if (league == null) return NotFound(); // Returns a 404 Not Found if the league doesn't exist
 
         var leagueDto = new LeagueDto
         {
@@ -65,7 +62,7 @@ public class LeaguesController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new league.
+    ///     Creates a new league.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<LeagueDto>> CreateLeague(CreateLeagueDto createLeagueDto)
@@ -99,17 +96,14 @@ public class LeaguesController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing league.
+    ///     Updates an existing league.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateLeague(Guid id, UpdateLeagueDto updateLeagueDto)
     {
         var league = await _context.Leagues.FindAsync(id);
 
-        if (league == null)
-        {
-            return NotFound();
-        }
+        if (league == null) return NotFound();
 
         // Map properties from the DTO to the entity
         league.Name = updateLeagueDto.Name;
@@ -124,16 +118,12 @@ public class LeaguesController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a league.
+    ///     Deletes a league.
     /// </summary>
-   
     public async Task<IActionResult> DeleteLeague(Guid id)
     {
         var league = await _context.Leagues.FindAsync(id);
-        if (league == null)
-        {
-            return NotFound();
-        }
+        if (league == null) return NotFound();
 
         _context.Leagues.Remove(league);
         await _context.SaveChangesAsync();

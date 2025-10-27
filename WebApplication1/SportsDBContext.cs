@@ -41,44 +41,44 @@ public class SportsDbContext : DbContext
         // This is the key to our flexible statistics storage.
 
         modelBuilder.Entity<PlayerGameStat>()
-           .Property(pgs => pgs.Stats)
-           .HasColumnType("jsonb");
+            .Property(pgs => pgs.Stats)
+            .HasColumnType("jsonb");
 
         modelBuilder.Entity<TeamGameStat>()
-           .Property(tgs => tgs.Stats)
-           .HasColumnType("jsonb");
+            .Property(tgs => tgs.Stats)
+            .HasColumnType("jsonb");
 
         modelBuilder.Entity<Person>()
-           .Property(p => p.PhysicalAttributes)
-           .HasColumnType("jsonb");
-            
+            .Property(p => p.PhysicalAttributes)
+            .HasColumnType("jsonb");
+
         modelBuilder.Entity<Game>()
-           .Property(g => g.Metadata)
-           .HasColumnType("jsonb");
+            .Property(g => g.Metadata)
+            .HasColumnType("jsonb");
 
         modelBuilder.Entity<League>()
-           .Property(l => l.Metadata)
-           .HasColumnType("jsonb");
+            .Property(l => l.Metadata)
+            .HasColumnType("jsonb");
 
         modelBuilder.Entity<Venue>()
-           .Property(v => v.Location)
-           .HasColumnType("jsonb");
+            .Property(v => v.Location)
+            .HasColumnType("jsonb");
 
 
         // --- Unique Constraint Configuration Example ---
         // This ensures that you cannot have duplicate entries for the same
         // league, year, and season type combination.
         modelBuilder.Entity<Season>()
-           .HasIndex(s => new { s.LeagueId, s.Year, s.Type })
-           .IsUnique();
-            
+            .HasIndex(s => new { s.LeagueId, s.Year, s.Type })
+            .IsUnique();
+
         // --- Other Configurations ---
         // You can configure relationships, composite keys, and other constraints here.
         // For example, to configure the self-referencing relationship in LeagueHierarchy:
         modelBuilder.Entity<LeagueHierarchy>()
-           .HasOne(lh => lh.Parent)
-           .WithMany(lh => lh.Children)
-           .HasForeignKey(lh => lh.ParentId);
+            .HasOne(lh => lh.Parent)
+            .WithMany(lh => lh.Children)
+            .HasForeignKey(lh => lh.ParentId);
 
         // Note: EF Core is smart and can infer many relationships by convention
         // (e.g., based on property names like 'LeagueId' and navigation properties).
