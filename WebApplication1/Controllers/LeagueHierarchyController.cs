@@ -1,11 +1,9 @@
-using WebApplication1.DTOs.Core_DTOs.LeagueHeirarchy;
-
-namespace WebApplication1.Controllers;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.DTOs.Core_DTOs.LeagueHeirarchy;
 using WebApplication1.Entities;
 
+namespace WebApplication1.Controllers;
 
 [ApiController]
 public class LeagueHierarchiesController : ControllerBase
@@ -18,26 +16,26 @@ public class LeagueHierarchiesController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all league hierarchy items (conferences, divisions, etc.).
+    ///     Gets a list of all league hierarchy items (conferences, divisions, etc.).
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<LeagueHierarchyDto>>> GetLeagueHierarchies()
     {
         var hierarchies = await _context.LeagueHierarchies
-           .Select(h => new LeagueHierarchyDto
+            .Select(h => new LeagueHierarchyDto
             {
                 LeagueHierarchyId = h.LeagueHierarchyId,
                 LeagueId = h.LeagueId,
                 ParentId = h.ParentId,
                 Name = h.Name
             })
-           .ToListAsync();
+            .ToListAsync();
 
         return Ok(hierarchies);
     }
 
     /// <summary>
-    /// Gets a specific league hierarchy item by its unique ID.
+    ///     Gets a specific league hierarchy item by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the hierarchy item.</param>
     [HttpGet("{id}")]
@@ -45,10 +43,7 @@ public class LeagueHierarchiesController : ControllerBase
     {
         var hierarchy = await _context.LeagueHierarchies.FindAsync(id);
 
-        if (hierarchy == null)
-        {
-            return NotFound();
-        }
+        if (hierarchy == null) return NotFound();
 
         var hierarchyDto = new LeagueHierarchyDto
         {
@@ -62,7 +57,7 @@ public class LeagueHierarchiesController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new league hierarchy item (e.g., a conference or division).
+    ///     Creates a new league hierarchy item (e.g., a conference or division).
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<LeagueHierarchyDto>> CreateLeagueHierarchy(CreateLeagueHierarchyDto createDto)
@@ -91,17 +86,14 @@ public class LeagueHierarchiesController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing league hierarchy item.
+    ///     Updates an existing league hierarchy item.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateLeagueHierarchy(Guid id, UpdateLeagueHierarchyDto updateDto)
     {
         var hierarchy = await _context.LeagueHierarchies.FindAsync(id);
 
-        if (hierarchy == null)
-        {
-            return NotFound();
-        }
+        if (hierarchy == null) return NotFound();
 
         hierarchy.Name = updateDto.Name;
         hierarchy.ParentId = updateDto.ParentId;
@@ -113,16 +105,12 @@ public class LeagueHierarchiesController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a league hierarchy item.
+    ///     Deletes a league hierarchy item.
     /// </summary>
-   
     public async Task<IActionResult> DeleteLeagueHierarchy(Guid id)
     {
         var hierarchy = await _context.LeagueHierarchies.FindAsync(id);
-        if (hierarchy == null)
-        {
-            return NotFound();
-        }
+        if (hierarchy == null) return NotFound();
 
         // Note: You may need to add logic here to handle what happens to children 
         // of a deleted hierarchy item (e.g., re-parent them or delete them).
