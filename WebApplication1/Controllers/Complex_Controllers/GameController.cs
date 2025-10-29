@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.DTOs.Complex_DTOs.Game;
 using WebApplication1.Complex_Entities;
+using WebApplication1.DTOs.Complex_DTOs.Game;
 
 namespace WebApplication1.Controllers;
 
@@ -16,13 +16,13 @@ public class GamesController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all games.
+    ///     Gets a list of all games.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GameDto>>> GetGames()
     {
         var games = await _context.Games
-        .Select(g => new GameDto
+            .Select(g => new GameDto
             {
                 GameId = g.GameId,
                 SeasonId = g.SeasonId,
@@ -32,13 +32,13 @@ public class GamesController : ControllerBase
                 Attendance = g.Attendance,
                 Metadata = g.Metadata
             })
-        .ToListAsync();
+            .ToListAsync();
 
         return Ok(games);
     }
 
     /// <summary>
-    /// Gets a specific game by its unique ID.
+    ///     Gets a specific game by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the game.</param>
     [HttpGet("{id}")]
@@ -46,10 +46,7 @@ public class GamesController : ControllerBase
     {
         var game = await _context.Games.FindAsync(id);
 
-        if (game == null)
-        {
-            return NotFound();
-        }
+        if (game == null) return NotFound();
 
         var gameDto = new GameDto
         {
@@ -66,7 +63,7 @@ public class GamesController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new game.
+    ///     Creates a new game.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<GameDto>> CreateGame(CreateGameDto createDto)
@@ -101,17 +98,14 @@ public class GamesController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing game.
+    ///     Updates an existing game.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateGame(Guid id, UpdateGameDto updateDto)
     {
         var game = await _context.Games.FindAsync(id);
 
-        if (game == null)
-        {
-            return NotFound();
-        }
+        if (game == null) return NotFound();
 
         game.VenueId = updateDto.VenueId;
         game.GameDateTime = updateDto.GameDateTime;
@@ -126,16 +120,12 @@ public class GamesController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a game.
+    ///     Deletes a game.
     /// </summary>
-   
     public async Task<IActionResult> DeleteGame(Guid id)
     {
         var game = await _context.Games.FindAsync(id);
-        if (game == null)
-        {
-            return NotFound();
-        }
+        if (game == null) return NotFound();
 
         _context.Games.Remove(game);
         await _context.SaveChangesAsync();

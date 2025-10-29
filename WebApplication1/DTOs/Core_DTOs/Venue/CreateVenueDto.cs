@@ -2,8 +2,6 @@ namespace WebApplication1.DTOs.Core_DTOs.Venue;
 
 public class CreateVenueDto
 {
-   
-   
     public string Name { get; set; }
 
     public string? City { get; set; }

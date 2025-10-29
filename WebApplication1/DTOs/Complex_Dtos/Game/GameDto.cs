@@ -1,4 +1,5 @@
 // DTOs/Complex_DTOs/Game/GameDto.cs
+
 namespace WebApplication1.DTOs.Complex_DTOs.Game;
 
 public class GameDto

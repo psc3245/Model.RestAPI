@@ -16,13 +16,13 @@ public class GameParticipantsController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all game participant records.
+    ///     Gets a list of all game participant records.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GameParticipantDto>>> GetGameParticipants()
     {
         var participants = await _context.GameParticipants
-          .Select(p => new GameParticipantDto
+            .Select(p => new GameParticipantDto
             {
                 GameParticipantId = p.GameParticipantId,
                 GameId = p.GameId,
@@ -30,13 +30,13 @@ public class GameParticipantsController : ControllerBase
                 Location = p.Location,
                 Score = p.Score
             })
-          .ToListAsync();
+            .ToListAsync();
 
         return Ok(participants);
     }
 
     /// <summary>
-    /// Gets a specific game participant record by its unique ID.
+    ///     Gets a specific game participant record by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the game participant record.</param>
     [HttpGet("{id}")]
@@ -44,10 +44,7 @@ public class GameParticipantsController : ControllerBase
     {
         var participant = await _context.GameParticipants.FindAsync(id);
 
-        if (participant == null)
-        {
-            return NotFound();
-        }
+        if (participant == null) return NotFound();
 
         var participantDto = new GameParticipantDto
         {
@@ -62,7 +59,7 @@ public class GameParticipantsController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new game participant record (adds a team to a game).
+    ///     Creates a new game participant record (adds a team to a game).
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<GameParticipantDto>> CreateGameParticipant(CreateGameParticipantDto createDto)
@@ -93,17 +90,14 @@ public class GameParticipantsController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing game participant's score.
+    ///     Updates an existing game participant's score.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateGameParticipant(Guid id, UpdateGameParticipantDto updateDto)
     {
         var participant = await _context.GameParticipants.FindAsync(id);
 
-        if (participant == null)
-        {
-            return NotFound();
-        }
+        if (participant == null) return NotFound();
 
         participant.Score = updateDto.Score;
         participant.UpdatedAt = DateTime.UtcNow;
@@ -114,16 +108,12 @@ public class GameParticipantsController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a game participant record.
+    ///     Deletes a game participant record.
     /// </summary>
-   
     public async Task<IActionResult> DeleteGameParticipant(Guid id)
     {
         var participant = await _context.GameParticipants.FindAsync(id);
-        if (participant == null)
-        {
-            return NotFound();
-        }
+        if (participant == null) return NotFound();
 
         _context.GameParticipants.Remove(participant);
         await _context.SaveChangesAsync();
