@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.DTOs.Core_DTOs.Team; // Correct namespace for Team DTOs
+using WebApplication1.DTOs.Core_DTOs.Team;
 using WebApplication1.Entities;
+// Correct namespace for Team DTOs
 
 namespace WebApplication1.Controllers;
 
@@ -16,13 +17,13 @@ public class TeamsController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all teams.
+    ///     Gets a list of all teams.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
     {
         var teams = await _context.Teams
-          .Select(t => new TeamDto
+            .Select(t => new TeamDto
             {
                 TeamId = t.TeamId,
                 LeagueId = t.LeagueId,
@@ -30,13 +31,13 @@ public class TeamsController : ControllerBase
                 ShortName = t.ShortName,
                 Abbreviation = t.Abbreviation
             })
-          .ToListAsync();
+            .ToListAsync();
 
         return Ok(teams);
     }
 
     /// <summary>
-    /// Gets a specific team by its unique ID.
+    ///     Gets a specific team by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the team.</param>
     [HttpGet("{id}")]
@@ -44,10 +45,7 @@ public class TeamsController : ControllerBase
     {
         var team = await _context.Teams.FindAsync(id);
 
-        if (team == null)
-        {
-            return NotFound();
-        }
+        if (team == null) return NotFound();
 
         var teamDto = new TeamDto
         {
@@ -62,7 +60,7 @@ public class TeamsController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new team.
+    ///     Creates a new team.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<TeamDto>> CreateTeam(CreateTeamDto createDto)
@@ -93,17 +91,14 @@ public class TeamsController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing team.
+    ///     Updates an existing team.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTeam(Guid id, UpdateTeamDto updateDto)
     {
         var team = await _context.Teams.FindAsync(id);
 
-        if (team == null)
-        {
-            return NotFound();
-        }
+        if (team == null) return NotFound();
 
         team.OfficialName = updateDto.OfficialName;
         team.ShortName = updateDto.ShortName;
@@ -116,16 +111,12 @@ public class TeamsController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a team.
+    ///     Deletes a team.
     /// </summary>
-   
     public async Task<IActionResult> DeleteTeam(Guid id)
     {
         var team = await _context.Teams.FindAsync(id);
-        if (team == null)
-        {
-            return NotFound();
-        }
+        if (team == null) return NotFound();
 
         _context.Teams.Remove(team);
         await _context.SaveChangesAsync();

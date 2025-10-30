@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.DTOs.Core_DTOs.Venue; // Correct namespace for Venue DTOs
+using WebApplication1.DTOs.Core_DTOs.Venue;
 using WebApplication1.Entities;
+// Correct namespace for Venue DTOs
 
 namespace WebApplication1.Controllers;
 
@@ -16,13 +17,13 @@ public class VenueController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all venues.
+    ///     Gets a list of all venues.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<VenueDto>>> GetVenues()
     {
         var venues = await _context.Venues
-         .Select(v => new VenueDto
+            .Select(v => new VenueDto
             {
                 VenueId = v.VenueId,
                 Name = v.Name,
@@ -32,13 +33,13 @@ public class VenueController : ControllerBase
                 Capacity = v.Capacity,
                 Location = v.Location
             })
-         .ToListAsync();
+            .ToListAsync();
 
         return Ok(venues);
     }
 
     /// <summary>
-    /// Gets a specific venue by its unique ID.
+    ///     Gets a specific venue by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the venue.</param>
     [HttpGet("{id}")]
@@ -46,10 +47,7 @@ public class VenueController : ControllerBase
     {
         var venue = await _context.Venues.FindAsync(id);
 
-        if (venue == null)
-        {
-            return NotFound();
-        }
+        if (venue == null) return NotFound();
 
         var venueDto = new VenueDto
         {
@@ -66,7 +64,7 @@ public class VenueController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new venue.
+    ///     Creates a new venue.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<VenueDto>> CreateVenue(CreateVenueDto createDto)
@@ -101,17 +99,14 @@ public class VenueController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing venue.
+    ///     Updates an existing venue.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateVenue(Guid id, UpdateVenueDto updateDto)
     {
         var venue = await _context.Venues.FindAsync(id);
 
-        if (venue == null)
-        {
-            return NotFound();
-        }
+        if (venue == null) return NotFound();
 
         venue.Name = updateDto.Name;
         venue.City = updateDto.City;
@@ -127,16 +122,12 @@ public class VenueController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a venue.
+    ///     Deletes a venue.
     /// </summary>
-   
     public async Task<IActionResult> DeleteVenue(Guid id)
     {
         var venue = await _context.Venues.FindAsync(id);
-        if (venue == null)
-        {
-            return NotFound();
-        }
+        if (venue == null) return NotFound();
 
         _context.Venues.Remove(venue);
         await _context.SaveChangesAsync();

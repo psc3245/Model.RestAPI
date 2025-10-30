@@ -16,24 +16,24 @@ public class SportsController : ControllerBase
     }
 
     /// <summary>
-    /// Gets a list of all sports.
+    ///     Gets a list of all sports.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SportDto>>> GetSports()
     {
         var sports = await _context.Sports
-          .Select(s => new SportDto
+            .Select(s => new SportDto
             {
                 SportId = s.SportId,
                 Name = s.Name
             })
-          .ToListAsync();
+            .ToListAsync();
 
         return Ok(sports);
     }
 
     /// <summary>
-    /// Gets a specific sport by its unique ID.
+    ///     Gets a specific sport by its unique ID.
     /// </summary>
     /// <param name="id">The GUID of the sport.</param>
     [HttpGet("{id}")]
@@ -41,10 +41,7 @@ public class SportsController : ControllerBase
     {
         var sport = await _context.Sports.FindAsync(id);
 
-        if (sport == null)
-        {
-            return NotFound();
-        }
+        if (sport == null) return NotFound();
 
         var sportDto = new SportDto
         {
@@ -56,7 +53,7 @@ public class SportsController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new sport.
+    ///     Creates a new sport.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<SportDto>> CreateSport(CreateSportDto createDto)
@@ -81,17 +78,14 @@ public class SportsController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing sport.
+    ///     Updates an existing sport.
     /// </summary>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSport(Guid id, UpdateSportDto updateDto)
     {
         var sport = await _context.Sports.FindAsync(id);
 
-        if (sport == null)
-        {
-            return NotFound();
-        }
+        if (sport == null) return NotFound();
 
         sport.Name = updateDto.Name;
         sport.UpdatedAt = DateTime.UtcNow;
@@ -102,16 +96,12 @@ public class SportsController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes a sport.
+    ///     Deletes a sport.
     /// </summary>
-   
     public async Task<IActionResult> DeleteSport(Guid id)
     {
         var sport = await _context.Sports.FindAsync(id);
-        if (sport == null)
-        {
-            return NotFound();
-        }
+        if (sport == null) return NotFound();
 
         _context.Sports.Remove(sport);
         await _context.SaveChangesAsync();
