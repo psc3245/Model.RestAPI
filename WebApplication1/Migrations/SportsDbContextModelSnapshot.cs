@@ -274,7 +274,6 @@ namespace WebApplication1.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Metadata")
-                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<string>("Name")

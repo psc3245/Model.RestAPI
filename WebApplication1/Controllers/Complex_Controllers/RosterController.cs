@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [ApiController]
+[Route("api/[controller]")]
 public class RostersController : ControllerBase
 {
     private readonly SportsDbContext _context;

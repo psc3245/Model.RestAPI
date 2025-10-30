@@ -6,11 +6,12 @@ using WebApplication1.DTOs.Complex_DTOs.Game;
 namespace WebApplication1.Controllers;
 
 [ApiController]
-public class GamesController : ControllerBase
+[Route("api/[controller]")]
+public class GamesController_TEST_ : ControllerBase
 {
     private readonly SportsDbContext _context;
 
-    public GamesController(SportsDbContext context)
+    public GamesController_TEST_(SportsDbContext context)
     {
         _context = context;
     }
@@ -122,6 +123,7 @@ public class GamesController : ControllerBase
     /// <summary>
     ///     Deletes a game.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGame(Guid id)
     {
         var game = await _context.Games.FindAsync(id);

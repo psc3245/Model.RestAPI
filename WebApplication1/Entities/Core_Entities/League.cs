@@ -10,7 +10,7 @@ public class League
     public string Level { get; set; }
 
     // Maps to JSONB in Postgre
-    public string Metadata { get; set; }
+    public string? Metadata { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public Sport Sport { get; set; }

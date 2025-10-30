@@ -6,6 +6,7 @@ using WebApplication1.Entities;
 namespace WebApplication1.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class LeagueHierarchiesController : ControllerBase
 {
     private readonly SportsDbContext _context;

@@ -8,6 +8,7 @@ namespace WebApplication1.Controllers;
 // Make sure this namespace is correct
 
 [ApiController]
+[Route("api/[controller]")]
 public class PersonsController : ControllerBase
 {
     private readonly SportsDbContext _context;

@@ -7,6 +7,7 @@ using WebApplication1.DTOs.Complex_Dtos.TeamGameStat;
 namespace WebApplication1.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class TeamGameStatsController : ControllerBase
 {
     private readonly SportsDbContext _context;
