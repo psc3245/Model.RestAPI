@@ -125,6 +125,7 @@ public class VenueController : ControllerBase
     /// <summary>
     ///     Deletes a venue.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVenue(Guid id)
     {
         var venue = await _context.Venues.FindAsync(id);

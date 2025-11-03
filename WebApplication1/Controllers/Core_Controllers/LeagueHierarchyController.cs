@@ -108,6 +108,7 @@ public class LeagueHierarchiesController : ControllerBase
     /// <summary>
     ///     Deletes a league hierarchy item.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLeagueHierarchy(Guid id)
     {
         var hierarchy = await _context.LeagueHierarchies.FindAsync(id);

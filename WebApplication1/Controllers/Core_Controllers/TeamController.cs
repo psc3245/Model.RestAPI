@@ -114,6 +114,7 @@ public class TeamsController : ControllerBase
     /// <summary>
     ///     Deletes a team.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTeam(Guid id)
     {
         var team = await _context.Teams.FindAsync(id);

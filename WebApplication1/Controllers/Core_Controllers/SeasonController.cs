@@ -116,6 +116,7 @@ public class SeasonsController : ControllerBase
     /// <summary>
     ///     Deletes a season.
     /// </summary>
+   [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSeason(Guid id)
     {
         var season = await _context.Seasons.FindAsync(id);

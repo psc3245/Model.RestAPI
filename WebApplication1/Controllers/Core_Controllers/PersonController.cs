@@ -121,6 +121,7 @@ public class PersonsController : ControllerBase
     /// <summary>
     ///     Deletes a person.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePerson(Guid id)
     {
         var person = await _context.Persons.FindAsync(id);

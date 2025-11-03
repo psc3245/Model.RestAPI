@@ -121,6 +121,7 @@ public class LeaguesController : ControllerBase
     /// <summary>
     ///     Deletes a league.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLeague(Guid id)
     {
         var league = await _context.Leagues.FindAsync(id);

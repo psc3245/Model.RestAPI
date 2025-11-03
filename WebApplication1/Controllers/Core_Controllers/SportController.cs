@@ -99,6 +99,7 @@ public class SportsController : ControllerBase
     /// <summary>
     ///     Deletes a sport.
     /// </summary>
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSport(Guid id)
     {
         var sport = await _context.Sports.FindAsync(id);
