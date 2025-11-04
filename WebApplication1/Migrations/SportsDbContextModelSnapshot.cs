@@ -345,11 +345,9 @@ namespace WebApplication1.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Nationality")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhysicalAttributes")
-                        .IsRequired()
                         .HasColumnType("jsonb");
 
                     b.Property<DateTime>("UpdatedAt")

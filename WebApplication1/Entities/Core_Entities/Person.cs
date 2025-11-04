@@ -9,10 +9,10 @@ public class Person
     public string LastName { get; set; }
     public DateTime? BirthDate { get; set; }
 
-    public string Nationality { get; set; }
+    public string? Nationality { get; set; }
 
     // Maps ot JSONB in Postgre
-    public string PhysicalAttributes { get; set; }
+    public string? PhysicalAttributes { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public ICollection<Roster> Rosters { get; set; }
